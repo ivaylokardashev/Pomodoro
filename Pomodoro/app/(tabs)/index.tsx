@@ -76,9 +76,38 @@ export default function PomodoroScreen() {
     }
   }, [timeLeft]);
 
+  const soundRef = useRef<Audio.Sound | null>(null);
+
+  // Освобождаване на ресурси при unmount
+  useEffect(() => {
+    return () => {
+      if (soundRef.current) {
+        soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+    };
+  }, []);
+
   const playSound = async () => {
+    // Ако има вече зареден звук, освобождаваме го първо
+    if (soundRef.current) {
+      await soundRef.current.unloadAsync();
+      soundRef.current = null;
+    }
+
     const { sound } = await Audio.Sound.createAsync(require('../../assets/alarm.mp3'));
+    soundRef.current = sound;
+
     await sound.playAsync();
+
+    // Спираме звука след 7 секунди и освобождаваме ресурси
+    setTimeout(async () => {
+      if (soundRef.current) {
+        await soundRef.current.stopAsync();
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+    }, 7000);
   };
 
   if (!fontsLoaded) return null;
@@ -114,26 +143,32 @@ export default function PomodoroScreen() {
 }
 
 const styles = StyleSheet.create({
-  bg: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  bg: { flex: 1, alignItems: 'center', justifyContent: 'center', },
   time: {
     fontFamily: 'Pacifico',
-    fontSize: 48,
-    color: '#102441',
-    position: 'absolute',
-    top: 120,
+    fontSize: 64,
+    color: '#FFFFF0',
+    position: 'absolute', 
+    top: '22%',
   },
   round: {
     marginTop: 20,
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: 'Pacifico',
-    color: '#102441',
+    color: '#FFFFF0',
+    position: 'absolute', 
+    top: '47%',
   },
   button: {
+    position: 'absolute',
+    bottom: '7%',           // 75% отгоре (или 25% от долу)
+    alignSelf: 'center',     // центриране по хоризонтала
+    width: 227,
+    height: 59,
     backgroundColor: '#D9D9D9',
     borderRadius: 15,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    marginTop: 30,
+    justifyContent: 'center', // центриране вертикално на текста
+    alignItems: 'center', 
   },
   buttonText: {
     fontFamily: 'Pacifico',
