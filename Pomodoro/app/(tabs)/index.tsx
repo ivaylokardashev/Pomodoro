@@ -95,6 +95,7 @@ export default function PomodoroScreen() {
       soundRef.current = null;
     }
 
+    
     const { sound } = await Audio.Sound.createAsync(require('../../assets/alarm.mp3'));
     soundRef.current = sound;
 
@@ -116,6 +117,11 @@ export default function PomodoroScreen() {
     <ImageBackground
       source={require('../../assets/images/background.png')}
       style={styles.bg}
+      imageStyle={{
+        position: 'absolute',
+        width: '145%',
+        height: '100%',
+      }}
       resizeMode="cover"
     >
       <Link href="/(tabs)/settings" asChild>
@@ -149,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 64,
     color: '#FFFFF0',
     position: 'absolute', 
-    top: '22%',
+    top: '28%',
   },
   round: {
     marginTop: 20,
