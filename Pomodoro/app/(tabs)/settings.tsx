@@ -35,7 +35,12 @@ export default function SettingsScreen() {
   return (
     <ImageBackground
       source={require('../../assets/images/background.png')}
-      style={styles.container}
+      style={styles.bg}
+      imageStyle={{
+        position: 'absolute',
+        width: '145%',
+        height: '100%',
+      }}
       resizeMode="cover"
     >
       <KeyboardAvoidingView
@@ -75,42 +80,51 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  bg: {
     flex: 1,
-    backgroundColor: '#ffffffDD',
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   form: {
-    width: '90%',
+    width: '75%',
+    position: 'absolute',
+    bottom: '7%',
   },
   label: {
-    fontFamily: 'Pacifico-Regular',
+    fontFamily: 'Pacifico',
     fontSize: 24,
     textAlign: 'center',
     marginBottom: 5,
-    color: '#102441',
+    color: 'white',
   },
   input: {
-    backgroundColor: '#D9D9D9',
+    height: 50,
+    width: 313,
+    backgroundColor: 'rgba(217,217,217,0.8)',
     borderRadius: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    fontSize: 18,
+    fontFamily: 'Pacifico',
+    fontSize: 24,
     color: 'black',
     textAlign: 'center',
-    marginBottom: 20,
+    paddingTop: 8,
+    lineHeight: 24,
+    textAlignVertical: 'center', // за Android
+    marginBottom: '5%',
   },
   button: {
+    marginTop: '23%',
+    width: 227,
+    height: 59,
     backgroundColor: '#D9D9D9',
     borderRadius: 15,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center', 
   },
   buttonText: {
-    fontFamily: 'Pacifico-Regular',
-    fontSize: 20,
+    fontFamily: 'Pacifico',
+    fontSize: 24,
     color: 'black',
   },
 });
