@@ -11,8 +11,8 @@ interface TimerArcProps {
 
 const TimerArc: React.FC<TimerArcProps> = ({
   progress,
-  size = 200,
-  strokeWidth = 20,
+  size = 220,
+  strokeWidth = 30,
   remainingColor = '#102441',
   elapsedColor = '#AEC5D6',
 }) => {
