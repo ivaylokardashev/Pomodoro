@@ -5,6 +5,8 @@ import { Audio } from 'expo-av';
 import { useFonts } from 'expo-font';
 import { useLocalSearchParams, Link } from 'expo-router';
 import TimerArc from '../../components/ui/TimerArc';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+
 
 export default function PomodoroScreen() {
   const params = useLocalSearchParams();
@@ -111,6 +113,17 @@ export default function PomodoroScreen() {
     }, 7000);
   };
 
+  const handleReset = () => {
+  if (intervalRef.current) {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }
+
+  setTimeLeft(session * 60);
+  setRound(1);
+  setIsRunning(false);
+  setOnBreak(false);
+};
   if (!fontsLoaded) return null;
 
   return (
@@ -129,13 +142,22 @@ export default function PomodoroScreen() {
           <Text style={{ fontSize: 24 }}>☰</Text>
         </TouchableOpacity>
       </Link>
+      
+      <TouchableOpacity
+        style={styles.resetButton}
+        onPress={handleReset}
+      >
+        <IconSymbol name="arrow.clockwise" color="black" size={24} />
+      </TouchableOpacity>
 
       <Text style={styles.time}>
         {Math.floor(timeLeft / 60)}:{('0' + (timeLeft % 60)).slice(-2)}
       </Text>
       <TimerArc progress={1 - timeLeft / ((onBreak ? breakMinutes : session) * 60)} />
       <Text style={styles.round}>
-        {round}/{roundTotal} {onBreak ? '(Break)' : ''}
+        {round}/{roundTotal} 
+        {'\n'}
+        {onBreak ? '(Break)' : ''}
       </Text>
 
       <TouchableOpacity
@@ -163,12 +185,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Pacifico',
     color: '#FFFFF0',
     position: 'absolute', 
-    top: '47%',
+    top: '48%',
+    textAlign: 'center', 
   },
   button: {
     position: 'absolute',
-    bottom: '7%',           // 75% отгоре (или 25% от долу)
-    alignSelf: 'center',     // центриране по хоризонтала
+    bottom: '7%',           
+    alignSelf: 'center',     
     width: 227,
     height: 59,
     backgroundColor: '#D9D9D9',
@@ -185,5 +208,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     right: 20,
+  },
+  resetButton: {
+  position: 'absolute',
+  bottom: '68%',
+  right: '18%',
+  backgroundColor: 'rgba(217, 217, 217, 0.75)',
+  borderRadius: 30,
+  padding: 12,
+  elevation: 4,
+  alignItems: 'center',
+  justifyContent: 'center',
   },
 });
