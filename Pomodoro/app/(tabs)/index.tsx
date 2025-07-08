@@ -1,6 +1,6 @@
 // app/(tabs)/index.tsx
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import { useFonts } from 'expo-font';
 import { useLocalSearchParams, Link } from 'expo-router';
@@ -66,7 +66,7 @@ export default function PomodoroScreen() {
           setRound(r => r + 1);
           setTimeLeft(session * 60);
           setOnBreak(false);
-          setIsRunning(autoStart); // или true
+          setIsRunning(autoStart);
         } else {
           // Всички рундове свършиха
           setIsRunning(false);
@@ -97,20 +97,12 @@ export default function PomodoroScreen() {
       soundRef.current = null;
     }
 
-    
+
     const { sound } = await Audio.Sound.createAsync(require('../../assets/alarm.mp3'));
     soundRef.current = sound;
 
     await sound.playAsync();
 
-    // Спираме звука след 7 секунди и освобождаваме ресурси
-    setTimeout(async () => {
-      if (soundRef.current) {
-        await soundRef.current.stopAsync();
-        await soundRef.current.unloadAsync();
-        soundRef.current = null;
-      }
-    }, 7000);
   };
 
   const handleReset = () => {
